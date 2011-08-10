@@ -112,10 +112,66 @@ public class DBWrapper {
         
     }
     
-    public String[] query(String querystr) {
-        String[] foo = new String[10];
+    public ArrayList queryByID(Integer id) throws SQLException, DataBaseQueryException {
         
-        return foo;
+        ArrayList<Student> students = null;
+        ResultSet r = null;
+        
+        PreparedStatement stmt = con.prepareStatement("SELECT studentID, firstName, lastName"
+                + "gpa, status, mentor, level, thesisTitle, thesisAdvisor, company"
+                + "from student where studenID=?");
+        
+        stmt.setInt(1, id);
+        
+        try {
+            r = stmt.executeQuery();
+            students = makeStudentFromResult(r);
+        }
+        catch (Exception e) {
+            throw new DataBaseQueryException("ID lookup failed");
+        }
+        
+        return students;
+    }
+    
+    
+    
+    public ArrayList<Student> queryByName(String name)
+            throws SQLException, DataBaseQueryException {
+        ArrayList<Student> students = null;
+        ResultSet r = null;
+        String[] names = null;
+        
+        String q = "SELECT studentID, firstName, lastName"
+                + "gpa, status, mentor, level, thesisTitle, thesisAdvisor, company"
+                + "from student";
+        
+        /* We should get either firstname lastname or ALL */
+        if ("ALL".equals(name)) {
+        }
+        else {
+            names = name.split(" ");
+            q += "where firstName=? and lastName=?";
+            
+        }
+        
+        PreparedStatement stmt = con.prepareStatement(q);
+        
+        if (names.length > 0) {
+            stmt.setString(1, names[0]);
+            stmt.setString(2, names[1]);
+        }
+        
+        try {
+            r = stmt.executeQuery();
+            students = makeStudentFromResult(r);
+        }
+        catch (Exception e) {
+            throw new DataBaseQueryException("ID lookup failed");
+        }
+        
+        return students;
+        
     }
     
     public void update(String querystr) {
@@ -124,5 +180,69 @@ public class DBWrapper {
     
     public void delete(String querystr) {
         
-    }    
+    }
+    
+    private ArrayList makeStudentFromResult(ResultSet r) throws DataBaseQueryException, SQLException {        
+        Student student = null;
+        ArrayList<Student> students = null;
+        String status = new String();
+        
+        
+        while (r.next()) {
+            try{            
+                status = r.getString("status");
+            }
+            catch (Exception e) {
+                throw new DataBaseQueryException("status field missing or invalid");
+            }
+  
+        
+            if ("Undergraduate".equals(status)) {
+                try {
+                    student = new UnderGraduate(r.getString("level"));
+                }
+                catch (Exception e) {
+                    throw new DataBaseQueryException("field missing in query results");
+                }
+            }
+            else if ("Graduate".equals(status)) {
+                try {
+                    student = new Graduate(r.getString("thesisTitle"),
+                        r.getString("thesisAdvisor"));    
+                }
+                catch (Exception e) {
+                    throw new DataBaseQueryException("field missing in query results");
+                }
+            }
+            else if ("PartTime".equals(status)) {
+                try {
+                    student = new PartTime(r.getString("company"));
+                }
+                catch (Exception e) {
+                    throw new DataBaseQueryException("field missing in query results");
+                }
+            }
+            else {
+                throw new DataBaseQueryException("Unreconized data in status field");
+            }
+        
+            try {
+                student.setID(r.getInt("studentID"));
+                student.setFName(r.getString("firstName"));
+                student.setLName(r.getString("lastName"));
+            
+                // Silly hack to deal with differing precision between Float and Double
+                Float foo = r.getFloat("gpa");
+                student.setGPA(Double.parseDouble(foo.toString()));
+                student.setStatus(r.getString("status"));
+                student.setMentor(r.getString("mentor"));
+            }
+            catch (Exception e) {
+                throw new DataBaseQueryException("Error in query data");
+            }
+            students.add(student);
+        }
+        
+        return students;
+    }
 }

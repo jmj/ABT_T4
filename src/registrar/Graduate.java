@@ -6,6 +6,7 @@ package registrar;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  *
@@ -33,6 +34,11 @@ public class Graduate extends Student{
     public Graduate (String first, String last, Integer id,
             String mentor, Double gpa, String status, String title, String advisor) throws DatabaseConnectionException {
         super(first, last, id, mentor, gpa, status);
+        thesisTitle = title;
+        thesisAdvisor = advisor;
+    }
+    public Graduate (String title, String advisor) throws DatabaseConnectionException {
+        super("", "", 0, "", 0.0, "Graduate");
         thesisTitle = title;
         thesisAdvisor = advisor;
     }
@@ -65,6 +71,31 @@ public class Graduate extends Student{
     }
     @Override
     void query() {
+        /* WHY!!!!  All 3 query() cases are identical.  This NEEDS to be in 
+         * Student, not implemented in each subclass.  Why are we being required
+         * to write crap software?
+         */
+        ArrayList<Student> students = null;
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String data = new String();
+        
+        try {
+            System.out.println("Enter a Student name (First Last), Student ID or the word  ALL");
+            data = input.readLine();
+            try {
+                Integer sid = Integer.parseInt(data);
+                students = DB.queryByID(sid);
+            }
+            
+            catch (Exception e) {
+                students = DB.queryByName(data);
+            }    
+        }
+        catch (Exception e) {
+            System.out.println("An error occured. Return  to main menu.");
+            return;
+        }
+        
         
     }
     @Override
