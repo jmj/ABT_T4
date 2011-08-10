@@ -68,31 +68,7 @@ public class UnderGraduate extends Student{
     }
     @Override
     void query() {
-        /* WHY!!!!  All 3 query() cases are identical.  This NEEDS to be in 
-         * Student, not implemented in each subclass.  Why are we being required
-         * to write crap software?
-         */
-        ArrayList<Student> students = null;
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        String data = new String();
-        
-        try {
-            System.out.println("Enter a Student name (First Last), Student ID or the word  ALL");
-            data = input.readLine();
-            try {
-                Integer sid = Integer.parseInt(data);
-                students = DB.queryByID(sid);
-            }
-            
-            catch (Exception e) {
-                students = DB.queryByName(data);
-            }    
-        }
-        catch (Exception e) {
-            System.out.println("An error occured. Return  to main menu.");
-            return;
-        }
-        
+        /* This isn't actually used */
     }
     @Override
     void add() {

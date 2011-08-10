@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  *
@@ -118,8 +119,41 @@ public class Registrar {
         System.out.print("delete()\n");
     }
     
-    private static void lookup() {
+    private static void lookup() throws DatabaseConnectionException {
         System.out.print("lookup()\n");
+        
+        DBWrapper DB = new DBWrapper();
+        ArrayList<Student> students = new ArrayList<Student>();
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String data = new String();
+        
+        try {
+            System.out.print("Enter a Student name (First Last), Student ID or the word ALL: ");
+            data = input.readLine();
+            try {
+                Integer sid = Integer.parseInt(data);
+                students = DB.queryByID(sid);
+            }
+            
+            catch (Exception e) {
+                students = DB.queryByName(data);
+            }    
+        }
+        catch (Exception e) {
+            System.out.println("An error occured. Return  to main menu.");
+            e.printStackTrace();
+            return;
+        }
+        
+        System.out.println("----------------");
+        for (Student student : students) {
+            System.out.println(student.toString());
+            System.out.println("----------------");
+        }
+        
+        
+        
+        
     }
     
     private static void update() {

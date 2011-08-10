@@ -5,14 +5,11 @@
 package registrar;
 
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
 /**
  *
@@ -114,12 +111,12 @@ public class DBWrapper {
     
     public ArrayList queryByID(Integer id) throws SQLException, DataBaseQueryException {
         
-        ArrayList<Student> students = null;
+        ArrayList<Student> students = new ArrayList<Student>();
         ResultSet r = null;
         
-        PreparedStatement stmt = con.prepareStatement("SELECT studentID, firstName, lastName"
-                + "gpa, status, mentor, level, thesisTitle, thesisAdvisor, company"
-                + "from student where studenID=?");
+        PreparedStatement stmt = con.prepareStatement("SELECT studentID, firstName, lastName, "
+                + "gpa, status, mentor, level, thesisTitle, thesisAdvisor, company "
+                + "from student where studentID=?");
         
         stmt.setInt(1, id);
         
@@ -128,6 +125,7 @@ public class DBWrapper {
             students = makeStudentFromResult(r);
         }
         catch (Exception e) {
+            e.printStackTrace();
             throw new DataBaseQueryException("ID lookup failed");
         }
         
@@ -137,21 +135,26 @@ public class DBWrapper {
     
     
     public ArrayList<Student> queryByName(String name)
-            throws SQLException, DataBaseQueryException {
-        ArrayList<Student> students = null;
-        ResultSet r = null;
-        String[] names = null;
+            throws SQLException, DataBaseQueryException {        
         
-        String q = "SELECT studentID, firstName, lastName"
-                + "gpa, status, mentor, level, thesisTitle, thesisAdvisor, company"
+        ArrayList<Student> students = new ArrayList<Student>();
+        ResultSet r = null;
+        String[] names = new String[0];
+        
+        String q = "SELECT studentID, firstName, lastName, "
+                + "gpa, status, mentor, level, thesisTitle, thesisAdvisor, company "
                 + "from student";
         
         /* We should get either firstname lastname or ALL */
         if ("ALL".equals(name)) {
         }
         else {
+            System.out.println("here");
             names = name.split(" ");
-            q += "where firstName=? and lastName=?";
+            if (names.length < 2) {
+                throw new DataBaseQueryException("Incorrect name format");
+            }
+            q += " where firstName=? and lastName=?";
             
         }
         
@@ -167,7 +170,8 @@ public class DBWrapper {
             students = makeStudentFromResult(r);
         }
         catch (Exception e) {
-            throw new DataBaseQueryException("ID lookup failed");
+            e.printStackTrace();
+            throw new DataBaseQueryException("Name lookup failed");
         }
         
         return students;
@@ -184,7 +188,7 @@ public class DBWrapper {
     
     private ArrayList makeStudentFromResult(ResultSet r) throws DataBaseQueryException, SQLException {        
         Student student = null;
-        ArrayList<Student> students = null;
+        ArrayList<Student> students = new ArrayList<Student>();
         String status = new String();
         
         
