@@ -117,6 +117,24 @@ public class Registrar {
     
     private static void delete() {
         System.out.print("delete()\n");
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String data = new String();
+        
+        System.out.println("Please note, deletes require a student ID for safety reasons");
+        System.out.println("Type L to switch to the lookup function to find a Student's ID");
+        try {
+            System.out.print("Student ID: ");
+            data = input.readLine();
+            if ("L".equals(data) || "l".equals(data)) {
+                lookup();
+                return;
+                
+            }
+        }
+        catch (Exception e) {
+            System.out.println("An error occured, returnning to main menu");
+            return;
+        }
     }
     
     private static void lookup() throws DatabaseConnectionException {
