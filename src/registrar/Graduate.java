@@ -58,6 +58,12 @@ public class Graduate extends Student{
         return thesisTitle;
     }
     
+    @Override
+    public String toString() {
+        return super.toString() + "\nThesis Title: " + thesisTitle + "\n"
+                + "Thesis Advisor: " + thesisAdvisor;
+    }
+    
     
     /* abstract methods */
     @Override

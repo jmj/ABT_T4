@@ -48,6 +48,11 @@ public class PartTime extends Student {
         return Company;
     }
     
+    @Override
+    public String toString() {
+        return super.toString() + "\nSponsoring Company: " + Company;
+    }
+    
     
     
     /* abstract methods */

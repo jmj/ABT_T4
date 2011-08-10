@@ -92,6 +92,15 @@ abstract class Student {
         return Mentor;
     }
     
+    @Override
+    public String toString() {
+        return "Name: " + FName + " " + LName + "\nStudent ID: " + ID + "\nMentor"
+                + Mentor + "\nStatus: " + Status
+                + "\nGPA: " + GPA.toString();
+        
+        
+    }
+    
     /* more anti-patterns; All of these share 99% of thier code, why are they 
      * abstract?  They should be implemented in Student w/ special case 
      * handeling for the extra fields required for various sub-classes

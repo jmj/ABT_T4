@@ -49,6 +49,11 @@ public class UnderGraduate extends Student{
         return Level;
     }
     
+    @Override
+    public String toString() {
+        return super.toString() + "\nGade Level: " + Level;
+    }
+    
     
     
     /* abstract methods */
