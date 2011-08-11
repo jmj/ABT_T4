@@ -174,8 +174,56 @@ public class DBWrapper {
         
     }
     
-    public void update(String querystr) {
+    public void update(Integer id, String type, String first, String last, Double gpa,
+            String mentor, String... extra) {
         
+        String q = "update student set "
+                + "firstName=?, lastName=?, gpa=?, status=?, mentor=?, ";
+        
+        if ("Undergraduate".equals(type)) {
+            q += "level=? ";
+        }
+        else if ("Graduate".equals(type)) {
+            q += "thesisTitle=?, thesisAdvisor=? ";
+            
+        }
+        else if ("PartTime".equals(type)) {
+            q += "company=? ";
+        }
+        
+        q += " where studentID=?";  
+        
+        try {
+        
+            PreparedStatement stmt = con.prepareStatement(q);
+        
+            stmt.setString(1, first);
+            stmt.setString(2, last);
+            stmt.setFloat(3, gpa.floatValue());
+            stmt.setString(4, type);
+            stmt.setString(5, mentor);        
+        
+            if ("Undergraduate".equals(type)) {
+                stmt.setString(6, extra[0]);
+                stmt.setInt(7, id);
+            }
+            else if ("Graduate".equals(type)) {
+                stmt.setString(6, extra[0]);
+                stmt.setString(7, extra[1]);
+                stmt.setInt(8, id);
+            }
+            else if ("PartTime".equals(type)) {
+                stmt.setString(6, extra[0]);
+                stmt.setInt(7, id);
+            }
+            System.out.println(stmt.toString());
+            stmt.executeUpdate();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            
+            System.out.println("Database update failed");
+        }
     }
     
     public void delete(Integer id) {

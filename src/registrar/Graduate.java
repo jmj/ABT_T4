@@ -72,7 +72,25 @@ public class Graduate extends Student{
     }
     @Override
     void update() {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String data = new String();
         
+        
+        System.out.println("Committing to database:");
+        System.out.println(toString());
+        System.out.print("Are you sure [N/y]: ");
+    
+        try {
+            data = input.readLine();
+            if ("y".equals(data) || "Y".equals(data)) {
+                DB.update(getID(), getStatus(), getFName(), getLName(), getGPA(),
+                        getMentor(), thesisTitle, thesisAdvisor);
+            }
+        }
+        catch (Exception e) {
+            System.out.println("An update errror occured");
+            return;
+        }
     }
     @Override
     void query() {

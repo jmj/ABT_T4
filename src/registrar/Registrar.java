@@ -203,7 +203,102 @@ public class Registrar {
         
     }
     
-    private static void update() {
+    private static void update() throws DatabaseConnectionException, SQLException, DataBaseQueryException {
         System.out.print("update()\n");
+        
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String data = new String();
+        Integer sid;
+        Integer swvar;
+        Boolean doCommit = false;
+        
+        System.out.println("Please note, updates require a student ID for safety reasons");
+        System.out.println("Type L to switch to the lookup function to find a Student's ID");
+        try {
+            System.out.print("Student ID: ");
+            data = input.readLine();
+            if ("L".equals(data) || "l".equals(data)) {
+                lookup();
+                return;
+            }
+        sid = Integer.parseInt(data);
+        }
+        catch (Exception e) {
+            System.out.println("An error occured, returnning to main menu");
+            return;
+        }
+        
+        DBWrapper DB = new DBWrapper();
+        ArrayList<Student> students = new ArrayList<Student>();
+        students = DB.queryByID(sid);
+
+        if (students.size() > 1) {
+            /* Whoa!!  This should never happen */
+            System.out.println("Umm, I think there's a problem.  "
+                    + "A query by ID returned more than 1 result");
+            return;
+        }
+        
+        Student student = students.get(0);
+        
+        while (! doCommit) {
+            
+            System.out.println("Select the field number to edit, or type COMMIT to finish");
+            System.out.println("(1) First Name: " + student.getFName());
+            System.out.println("(2) Last Name: " + student.getLName());
+            System.out.println("(3) Mentor: " + student.getMentor());
+            String status = student.getStatus();
+            System.out.println("(4) Status: " + status);
+            System.out.println("(5) GPA: " + student.getGPA().toString());
+            
+            if ("Undergraduate".equals(status)) {
+                System.out.println("(6)  Gade Level: " + ((UnderGraduate)student).getLevel());
+            }
+            else if ("Graduate".equals(status)) {
+                System.out.println("(7) Thesis Title: " + ((Graduate)student).getThesisTitle());
+                System.out.println("(8) Thesis Advisor: " + ((Graduate)student).getThesisAdvisor());
+            }
+            else if ("PartTime".equals(status)) {
+                System.out.println("(9) Sponsoring Company: " + ((PartTime)student).getCompany());
+            }
+            else {
+                System.out.println("I didn't reconize your input");
+                continue;
+            }
+            
+            try {
+                System.out.print("Field: ");
+                data = input.readLine();
+                if ("COMMIT".equals(data)) {
+                    student.update();
+                    return;
+                }
+            
+                swvar = Integer.parseInt(data);
+                System.out.print("New value: ");
+                data = input.readLine();
+            
+            }
+            catch (Exception e) {
+                System.out.println("I didn't reconize your input");
+                continue;
+            }
+            
+            
+            switch (swvar) {
+                case 1: student.setFName(data);                     break;
+                case 2: student.setLName(data);                     break;
+                case 3: student.setMentor(data);                    break;
+                case 4: student.setStatus(data);                    break;
+                case 5: student.setGPA(Double.parseDouble(data));   break;
+                case 6: ((UnderGraduate)student).setLevel(data);    break;
+                case 7: ((Graduate)student).setThesisTitle(data);   break;
+                case 8: ((Graduate)student).setThesisAdvisor(data); break;
+                case 9: ((PartTime)student).setCompany(data);       break;
+                default:
+            }
+                    
+            
+        }
     }
 }
