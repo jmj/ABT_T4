@@ -125,7 +125,6 @@ public class DBWrapper {
             students = makeStudentFromResult(r);
         }
         catch (Exception e) {
-            e.printStackTrace();
             throw new DataBaseQueryException("ID lookup failed");
         }
         
@@ -170,7 +169,6 @@ public class DBWrapper {
             students = makeStudentFromResult(r);
         }
         catch (Exception e) {
-            e.printStackTrace();
             throw new DataBaseQueryException("Name lookup failed");
         }
         

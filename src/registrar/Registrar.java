@@ -159,7 +159,6 @@ public class Registrar {
         }
         catch (Exception e) {
             System.out.println("An error occured. Return  to main menu.");
-            e.printStackTrace();
             return;
         }
         
