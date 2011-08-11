@@ -117,7 +117,6 @@ public class Registrar {
     }
     
     private static void delete() throws DatabaseConnectionException, SQLException, DataBaseQueryException {
-        System.out.print("delete()\n");
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         String data = new String();
         Integer sid;
@@ -168,7 +167,6 @@ public class Registrar {
     }
     
     private static void lookup() throws DatabaseConnectionException {
-        System.out.print("lookup()\n");
         
         DBWrapper DB = new DBWrapper();
         ArrayList<Student> students = new ArrayList<Student>();
@@ -204,7 +202,6 @@ public class Registrar {
     }
     
     private static void update() throws DatabaseConnectionException, SQLException, DataBaseQueryException {
-        System.out.print("update()\n");
         
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         String data = new String();

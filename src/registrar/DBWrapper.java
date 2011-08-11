@@ -220,7 +220,6 @@ public class DBWrapper {
             stmt.executeUpdate();
         }
         catch (Exception e) {
-            e.printStackTrace();
             
             System.out.println("Database update failed");
         }
@@ -234,7 +233,6 @@ public class DBWrapper {
             stmt.executeUpdate();
         }
         catch (Exception e) {
-            e.printStackTrace();
             System.out.println("Something went wrong while deleting student" +
                     id);
             return;
