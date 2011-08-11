@@ -94,7 +94,7 @@ abstract class Student {
     
     @Override
     public String toString() {
-        return "Name: " + FName + " " + LName + "\nStudent ID: " + ID + "\nMentor"
+        return "Name: " + FName + " " + LName + "\nStudent ID: " + ID + "\nMentor: "
                 + Mentor + "\nStatus: " + Status
                 + "\nGPA: " + GPA.toString();
         
