@@ -131,8 +131,6 @@ public class DBWrapper {
         return students;
     }
     
-    
-    
     public ArrayList<Student> queryByName(String name)
             throws SQLException, DataBaseQueryException {        
         
@@ -180,8 +178,19 @@ public class DBWrapper {
         
     }
     
-    public void delete(String querystr) {
-        
+    public void delete(Integer id) {
+        try {
+            PreparedStatement stmt = con.prepareStatement("delete from student where "
+                + "studentID=?");
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Something went wrong while deleting student" +
+                    id);
+            return;
+        }
     }
     
     private ArrayList makeStudentFromResult(ResultSet r) throws DataBaseQueryException, SQLException {        

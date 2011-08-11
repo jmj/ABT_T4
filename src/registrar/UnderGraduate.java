@@ -100,6 +100,7 @@ public class UnderGraduate extends Student{
     }
     @Override
     void delete() {
+        DB.delete(super.getID());
         
     }
     

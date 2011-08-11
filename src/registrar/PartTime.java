@@ -94,6 +94,7 @@ public class PartTime extends Student {
     }
     @Override
     void delete() {
+        DB.delete(super.getID());
         
     }
     

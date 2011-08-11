@@ -106,6 +106,7 @@ public class Graduate extends Student{
     }
     @Override
     void delete() {
+        DB.delete(super.getID());
         
     }
 }
