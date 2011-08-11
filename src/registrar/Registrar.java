@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -115,10 +116,11 @@ public class Registrar {
         
     }
     
-    private static void delete() {
+    private static void delete() throws DatabaseConnectionException, SQLException, DataBaseQueryException {
         System.out.print("delete()\n");
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         String data = new String();
+        Integer sid;
         
         System.out.println("Please note, deletes require a student ID for safety reasons");
         System.out.println("Type L to switch to the lookup function to find a Student's ID");
@@ -128,7 +130,35 @@ public class Registrar {
             if ("L".equals(data) || "l".equals(data)) {
                 lookup();
                 return;
-                
+            }
+        sid = Integer.parseInt(data);
+        }
+        catch (Exception e) {
+            System.out.println("An error occured, returnning to main menu");
+            return;
+        }
+        
+        
+        DBWrapper DB = new DBWrapper();
+        ArrayList<Student> students = new ArrayList<Student>();
+        students = DB.queryByID(sid);
+
+        if (students.size() > 1) {
+            /* Whoa!!  This should never happen */
+            System.out.println("Umm, I think there's a problem.  "
+                    + "A query by ID returned more than 1 result");
+            return;
+        }
+        
+        Student student = students.get(0);
+        System.out.println("We will be removing the following student:");
+        System.out.println(student.toString());
+        System.out.print("Are you sure? [N/y] ");
+        
+        try {
+            data = input.readLine();
+            if ("Y".equals(data) || "y".equals(data)) {
+                student.delete();
             }
         }
         catch (Exception e) {
