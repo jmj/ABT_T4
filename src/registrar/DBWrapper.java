@@ -99,10 +99,7 @@ public class DBWrapper {
             stmt.setString(8, "");
             stmt.setString(9, "");
             stmt.setString(10, "");
-        }
-        
-        System.out.println(stmt.toString());
-        
+        }        
         
         stmt.executeUpdate();
         System.out.println(first + " " + last + " added.");
@@ -216,7 +213,6 @@ public class DBWrapper {
                 stmt.setString(6, extra[0]);
                 stmt.setInt(7, id);
             }
-            System.out.println(stmt.toString());
             stmt.executeUpdate();
         }
         catch (Exception e) {
