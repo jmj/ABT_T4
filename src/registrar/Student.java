@@ -23,6 +23,9 @@ abstract class Student {
     private String Status;
     private String Mentor;
     
+    static public Integer RESIDENT = 1;
+    static public Integer NONRESIDENT = 2;
+    
     public DBWrapper DB = null;
     
     public Student(String first, String last, Integer id,
@@ -109,7 +112,7 @@ abstract class Student {
      * task requirements make the final applicaion non-modular, and poorly
      * designed
      */
-    abstract Double calculateTuition();
+    abstract Double calculateTuition(Integer creditHours, Integer residency);
     abstract void update();
     abstract void query();
     abstract void add();

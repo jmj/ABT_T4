@@ -57,11 +57,6 @@ public class UnderGraduate extends Student{
     
     /* abstract methods */
     @Override
-    Double calculateTuition() {
-        return 12345.0;
-        
-    }
-    @Override
     void update() {
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         String data = new String();
@@ -120,6 +115,24 @@ public class UnderGraduate extends Student{
     @Override
     void delete() {
         DB.delete(super.getID());
+        
+    }
+    
+    @Override
+    Double calculateTuition(Integer creditHours, Integer residency){
+        Integer multiplyer = 0;
+        Integer fees = 0;
+        
+        if (residency == Student.RESIDENT) {
+            multiplyer = 200;
+        }
+        else if (residency == Student.NONRESIDENT) {
+            multiplyer = 4000;
+        }
+        
+        fees = creditHours * multiplyer;
+        return fees.doubleValue();
+        
         
     }
     
