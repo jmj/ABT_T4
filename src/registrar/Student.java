@@ -112,7 +112,7 @@ abstract class Student {
      * task requirements make the final applicaion non-modular, and poorly
      * designed
      */
-    abstract Double calculateTuition(Integer creditHours, Integer residency);
+    abstract Integer calculateTuition(Integer creditHours, Integer residency);
     abstract void update();
     abstract void query();
     abstract void add();

@@ -119,7 +119,7 @@ public class UnderGraduate extends Student{
     }
     
     @Override
-    Double calculateTuition(Integer creditHours, Integer residency){
+    Integer calculateTuition(Integer creditHours, Integer residency){
         Integer multiplyer = 0;
         Integer fees = 0;
         
@@ -130,10 +130,7 @@ public class UnderGraduate extends Student{
             multiplyer = 4000;
         }
         
-        fees = creditHours * multiplyer;
-        return fees.doubleValue();
-        
-        
+        return creditHours * multiplyer;
     }
     
 }
