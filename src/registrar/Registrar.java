@@ -42,6 +42,7 @@ public class Registrar {
              else if ("delete".indexOf(op) == 0) { delete(); }
              else if ("lookup".indexOf(op) == 0) { lookup(); }
              else if ("update".indexOf(op) == 0) { update(); }
+             else if ("tuition".indexOf(op) == 0) { tuition(); }
              else if (op.indexOf("help") >= 0) { commandhelp(op); }
              else { System.out.println("Unreconized command"); }
         }
@@ -201,7 +202,8 @@ public class Registrar {
         
     }
     
-    private static void update() throws DatabaseConnectionException, SQLException, DataBaseQueryException {
+    private static void update() throws DatabaseConnectionException, SQLException,
+            DataBaseQueryException {
         
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         String data = new String();
@@ -297,5 +299,66 @@ public class Registrar {
                     
             
         }
+    }
+    
+    private static void tuition() throws DatabaseConnectionException, SQLException, DataBaseQueryException {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String data = new String();
+        Integer sid;
+        Integer hours = 0;
+        Integer status;
+        
+        System.out.println("Tutition calculation requires a student id");
+        System.out.println("Type L to switch to the lookup function to find a Student's ID");
+        try {
+            System.out.print("Student ID: ");
+            data = input.readLine();
+            if ("L".equals(data) || "l".equals(data)) {
+                lookup();
+                return;
+            }
+        sid = Integer.parseInt(data);
+        }
+        catch (Exception e) {
+            System.out.println("An error occured, returnning to main menu");
+            return;
+        }
+        
+        DBWrapper DB = new DBWrapper();
+        ArrayList<Student> students = new ArrayList<Student>();
+        students = DB.queryByID(sid);
+
+        if (students.size() > 1) {
+            /* Whoa!!  This should never happen */
+            System.out.println("Umm, I think there's a problem.  "
+                    + "A query by ID returned more than 1 result");
+            return;
+        }
+        
+        Student student = students.get(0);
+        try {
+            System.out.print("Please enter the number of credit hours this student is enrolled in: ");
+            data = input.readLine();
+            hours = Integer.parseInt(data);
+            System.out.println("The student's residency status is");
+            System.out.println("(1) Resident");
+            System.out.println("(2) Non-Resident");
+            System.out.print("Enter 1 or 2: ");
+            data = input.readLine();
+            status = Integer.parseInt(data);
+            
+            if (status != Student.RESIDENT && status != Student.NONRESIDENT ) {
+                System.out.println("I didn't reconize your input.  Returning to main menu");
+                return;
+            }
+            
+            System.out.println("The students tuition is $" + student.calculateTuition(
+                    hours, status));
+        }
+        catch (Exception e) {
+            System.out.println("An error occured reading input.  Returning to main menu");
+            return;
+        }
+        
     }
 }
