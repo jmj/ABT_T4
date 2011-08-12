@@ -106,7 +106,7 @@ public class DBWrapper {
         
     }
     
-    public ArrayList queryByID(Integer id) throws SQLException, DataBaseQueryException {
+    public ArrayList<Student> queryByID(Integer id) throws SQLException, DataBaseQueryException {
         
         ArrayList<Student> students = new ArrayList<Student>();
         ResultSet r = null;
@@ -235,7 +235,7 @@ public class DBWrapper {
         }
     }
     
-    private ArrayList makeStudentFromResult(ResultSet r) throws DataBaseQueryException, SQLException {        
+    private ArrayList<Student> makeStudentFromResult(ResultSet r) throws DataBaseQueryException, SQLException {        
         Student student = null;
         ArrayList<Student> students = new ArrayList<Student>();
         String status = new String();
