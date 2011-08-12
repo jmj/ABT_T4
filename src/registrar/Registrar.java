@@ -57,6 +57,7 @@ public class Registrar {
         System.out.println("add\t\tAdd a student to the database");
         System.out.println("delete\t\tRemove a student from the database");
         System.out.println("update\t\tUpdate a students information");
+        System.out.println("tuition\t\tCalculate the tuition for a student");
         System.out.println("quit\t\tExit the application");
         
     }
@@ -65,15 +66,39 @@ public class Registrar {
         String[] command = op.split(" ");
         if ("add".equals(command[1])) {
             System.out.println("help add");
+            System.out.println("\tAdd a student to the database\n");
+            System.out.println("The system will ask for student details.  Be sure to");
+            System.out.println("follow the prompts.  Note capitalization matters");
         }
         else if ("delete".equals(command[1])) {
             System.out.println("help delete");
+            System.out.println("\tRemove a student from the database\n");
+            System.out.println("The system will ask for a student ID, and offer the oppurtunity");
+            System.out.println("switch to the lookup system");
+            System.out.println("Note all remove and update operations require the use of a student ID");
         }
         else if ("update".equals(command[1])) {
             System.out.println("help update");
+            System.out.println("\tChange the datils of a student record\n");
+            System.out.println("The system will ask fo a student ID, then print out the");
+            System.out.println("student record.  Enter the field number for the field you");
+            System.out.println("wish to update.  You can update more then one field");
+            System.out.println("Type COMMIT to complete your changes");
         }
         else if ("lookup".equals(command[1])) {
             System.out.println("help lookup");
+            System.out.println("\tLook up a student record\n");
+            System.out.println("You can look up a student by name, ID, or print all student records");
+            System.out.println("Enter the students first and last name to perform a name lookup");
+            System.out.println("Enter a numerical ID to perform a student ID lookup");
+            System.out.println("Enter the keywork 'ALL' to print all student records");
+        }
+        else if ("tuition".equals(command[1])) {
+            System.out.println("help tuition");
+            System.out.println("\tCalculate the tuition for a student\n");
+            System.out.println("The system will ask for a studen ID, number of credit hours,");
+            System.out.println("and residency status.  It will then print out the tuition due");
+            
         }
         else {
             System.out.println("Unknown command");
