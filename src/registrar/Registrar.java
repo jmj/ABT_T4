@@ -112,7 +112,7 @@ public class Registrar {
         
         while (true) {
             try {
-                System.out.print("Student Type (Undergran/Grad/PartTime): ");
+                System.out.print("Student Type (Undergrad/Grad/PartTime): ");
                 data = input.readLine();
                 if (data.equals("Undergrad")) {
                     srec = new UnderGraduate();
